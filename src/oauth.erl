@@ -33,7 +33,9 @@ post(URL, ExtraParams, Consumer, Token, TokenSecret) ->
 
 post(URL, ExtraParams, Consumer, Token, TokenSecret, HttpcOptions) ->
   SignedParams = sign("POST", URL, ExtraParams, Consumer, Token, TokenSecret),
-  http_request(post, {URL, [], "application/x-www-form-urlencoded", uri_params_encode(SignedParams)}, HttpcOptions).
+  Header = header(SignedParams),
+  Body = params_encode(ExtraParams),
+  http_request(post, {URL, [Header], "application/x-www-form-urlencoded", Body}, HttpcOptions).
 
 put(URL, ExtraParams, {ContentType, Body}, Consumer, Token, TokenSecret) ->
   put(URL, ExtraParams, {ContentType, Body}, Consumer, Token, TokenSecret, []).
